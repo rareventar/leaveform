@@ -9,7 +9,7 @@ var con = mysql.createConnection({
 });
 con.connect(function(err) {
   if (err) throw err;
-  // console.log('Database is connected successfully !a');
+  console.log('Database is connected successfully!');
 });
 function getBusinessDatesCount(startDate, endDate) {
   startDate = new Date(startDate);
@@ -26,9 +26,7 @@ function getBusinessDatesCount(startDate, endDate) {
     return count;
   }
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-  // console.log();
   res.render('index', { title: 'Express' });
 });
 
@@ -38,13 +36,11 @@ router.post('/save', function(req,res){
   let sql1 = "update user set numLeave = ? where name = ?"
   let sql2  = "insert into user (name, numLeave) values (?, ?)"
   var count = 0;
-  console.log(req.body);
   if(req.body.request == "whole" || req.body.request == "half"){
     count  = 24 - 1;
   }else{
     count = 24 - getBusinessDatesCount(req.body.from, req.body.to);
   }
-  console.log(count);
   var name1 = req.body.name
   let query = con.query(sql, req.body.name, (err, results) =>{
     if(results.length > 0){
