@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+
+    <meta charset="utf-8">
+    <title></title>
+    <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/> -->
+  </head>
+  <body>
+
+    <form action="/save" method="post">
+        Name:
+        <input type="text" name="name" value="">
+        <br/>
+        Leave request:
+        <input type="radio" name="request" value="whole" onclick="whole()">
+        <label id="whole">Whole day</label>
+        <input type="radio" name="request" value="half" onclick="half()">
+        <label id="half">Half-day</label>
+        <input type="radio" name="request" value="multiple" onclick="days()">
+        <label id="multiple">Multiple days</label>
+        <br/>
+        From: <input type="date" id = "datepicker" name = "from"> To: <input type="date" id = "datepicker2" name = "to">
+        <br>
+        <button  onclick="submit()">Submit</button>
+
+    </form>
+    <script type="text/javascript">
+    function half(){
+      document.getElementById("datepicker2").setAttribute("disabled","");
+    }
+    function whole(){
+      document.getElementById("datepicker2").setAttribute("disabled","");
+    }
+    function days(){
+      document.getElementById("datepicker2").disabled = false;
+    }
+    function getBusinessDatesCount(startDate, endDate) {
+        var count = 0;
+        var curDate = startDate;
+        while (curDate <= endDate) {
+            var dayOfWeek = curDate.getDay();
+            if(!((dayOfWeek == 6) || (dayOfWeek == 0)))
+               count++;
+            curDate.setDate(curDate.getDate() + 1);
+        }
+        alert(count)
+        return count;
+    }
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById("datepicker").setAttribute('min', today);
+    document.getElementById("datepicker2").setAttribute('min', today);
+
+    const picker = document.getElementById('datepicker');
+    picker.addEventListener('input', function(e){
+      // console.log(datepicker.value);
+      var day = new Date(this.value).getUTCDay();
+      if([6,0].includes(day)){
+        e.preventDefault();
+        this.value = '';
+        alert('Weekends not allowed');
+      }
+    });
+    const picker2 = document.getElementById('datepicker2');
+    picker2.addEventListener('input', function(e){
+      var day = new Date(this.value).getUTCDay();
+      if([6,0].includes(day)){
+        e.preventDefault();
+        this.value = '';
+        alert('Weekends not allowed');
+      }
+    });
+    // function submit(){
+    //   console.log("ashbdjashd");
+    //   alert(getBusinessDatesCount(datepicker.value, datepicker2.value));
+    // }
+    </script>
+  </body>
+</html>
